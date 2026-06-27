@@ -71,7 +71,8 @@ const app = new Hono<AuthenticatedEnv>()
     async (c) => {
       const userId = c.get("userId");
       const { id, messages, mode, model } = c.req.valid("json");
-
+console.log("Incoming session id:", id);
+console.log("Authenticated user:", userId);
       const session = await db.session.findUnique({
         where: { id, userId },
       });

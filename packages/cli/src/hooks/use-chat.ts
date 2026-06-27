@@ -43,6 +43,7 @@ export function useChat(sessionId: string, initialMessages: Message[]) {
         const metadata = messages.findLast(
           (m) => m.metadata?.mode && m.metadata?.model,
         )?.metadata;
+        console.log(messages);
         const previousMessage = messages[messages.length - 2];
         const requestMessages =
           message.role === "assistant" && previousMessage?.role === "user"
