@@ -19,9 +19,7 @@ import {
 } from "@nightcode/shared";
 import { buildSystemPrompt } from "../system-prompt";
 import type { AuthenticatedEnv } from "../middleware/require-auth";
-import { requireCreditsBalance } from "../middleware/require-credits-balance";
-import { calculateCreditsForUsage } from "../lib/credits";
-import { ingestAiUsage } from "../lib/polar";
+
 import { isSupportedChatModel, resolveChatModel } from "../lib/models";
 
 type ChatMessageMetadata = {
@@ -66,7 +64,6 @@ function hasPendingToolCalls(message: NightcodeUIMessage) {
 const app = new Hono<AuthenticatedEnv>()
   .post(
     "/",
-    requireCreditsBalance,
     submitValidator,
     async (c) => {
       const userId = c.get("userId");
@@ -149,29 +146,7 @@ console.log("Authenticated user:", userId);
               messages: event.messages as unknown as Prisma.InputJsonValue,
             },
           });
-
-          if (!completedUsage) return;
-
-          try {
-            const billableUsage = calculateCreditsForUsage({
-              provider: resolvedModel.provider,
-              model: resolvedModel.modelId,
-              usage: completedUsage,
-            });
-
-            await ingestAiUsage({
-              externalCustomerId: userId,
-              eventId: `chat-message:${event.responseMessage.id}`,
-              credits: billableUsage.credits,
-            });
-          } catch (error) {
-            console.error("Failed to ingest Polar AI usage for chat message", {
-              error,
-              sessionId: id,
-              messageId: event.responseMessage.id,
-              userId,
-            });
-          }
+         
         },
         onError(error) {
           return error instanceof Error ? error.message : String(error);

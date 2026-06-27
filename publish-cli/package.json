@@ -1,6 +1,6 @@
 {
   "name": "nightcode",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "AI coding assistant for your terminal.",
   "author": "Aman Jaiswal",
   "license": "MIT",
@@ -36,15 +36,10 @@
 
   "files": [
     "dist",
-    "bin",
-    "README.md",
-    "LICENSE"
+    "bin"
   ],
 
-  "scripts": {
-    "dev": "bun run --watch src/index.tsx",
-    "build": "bun build src/index.tsx --outdir dist --target bun"
-  },
+  "scripts": {},
 
   "peerDependencies": {
     "typescript": "^5"
@@ -52,7 +47,7 @@
 
   "dependencies": {
     "@ai-sdk/react": "^3.0.186",
-    "@nightcode/shared": "workspace:*",
+"@nightcodehq/shared": "^1.0.0",
     "@opentui/core": "^0.1.97",
     "@opentui/react": "^0.1.97",
     "ai": "^6.0.184",
